@@ -10,13 +10,14 @@
 
 ### Starting server locally
 
-    npm start
+    $ npm start
 
 *Now you can visit http://localhost:9090 to view your application*
 
 ### Deploy the app to nodejitsu
 
-    jitsu deploy
+    $ jitsu login (one-time only)
+    $ jitsu deploy
 
 *You will now be prompted for a `subdomain` to deploy your application on*
 
