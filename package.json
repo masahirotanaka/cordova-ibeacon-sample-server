@@ -21,6 +21,5 @@
   "description": "[http://socket.io](http://socket.io)",
   "dist": {
     "shasum": "8514fd3592d51cd5383819f7c16bc0d32583babf"
-  },
-  "subdomain": "cordova-ibeacon-sample"
+  }
 }
