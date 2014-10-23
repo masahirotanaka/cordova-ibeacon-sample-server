@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>socket.io boilerplate</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+        <script src="//code.jquery.com/jquery-2.1.1.min.js"></script>
+    </head>
+    <body>
+    
+        <div>
+          <form>
+            <table>
+              <tr>
+                <th>Number</th>
+                <td><input name="number"></td>
+              </tr>
+              <tr>
+                <th>Username</th>
+                <td><input name="username"></td>
+              </tr>
+              <tr>
+                <th>Comment</th>
+                <td><input name="comment"></td>
+              </tr>
+              <tr>
+                <th>Avatar</th>
+                <td><input name="avatar"></td>
+              </tr>            
+            </table>
+          </form>
+          <button id="save-comment">Save</button>
+          <button id="list-comments">List comments</button>
+        </div>
+        
+        <script src="/socket.io/socket.io.js"></script>
+        <script>
+          var logger = function(title, message) {
+            $("#server-log").text(
+              [ $("#server-log").text(), title, "\n", message, "\n\n" ].join(""));
+          };
+        
+          $(function() {
+            var socket = io.connect();
+
+            socket.on('comments', function (data) {
+              logger("> comments", JSON.stringify(data));
+            });
+            
+            socket.on('commentupdated', function (data) {
+              logger("> commentupdated", JSON.stringify(data));
+            });
+            
+            $("button#save-comment").on("click", function() {
+              var data = {};
+              $.each($('form').serializeArray(), function(_, kv) {
+                  data[kv.name] = kv.value;
+                });
+              console.log(data);
+              socket.emit("addcomment", data);
+            });
+
+            $("button#list-comments").on("click", function() {
+              socket.emit("listcomments", { number: $("input[name=number]").val() });
+            });
+            
+          });
+        </script>
+        
+        <pre id="server-log" style="margin: 1em; border: 1px solid #ccc; padding: 1em; background-color: #555; color: #fff; white-space: pre-wrap;"></pre>
+        
+    </body>
+</html>
+
